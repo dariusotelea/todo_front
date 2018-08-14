@@ -53,9 +53,44 @@ export default Controller.extend({
     toggleAddTasktypeModal: function () {
       this.toggleProperty('isShowingAddTasktypeModal');
     },
-
+    
     addTask(task) {
-      task.save()
+      debugger
+      task.validate()
+        .then(({validations}) => {
+          if(validations.get('isValid')) {
+            task.save()
+            .then(() => this.set('showSaved', true));
+          }
+          this.set('didValidate', true);
+          this.send('toggleAddTaskModal')
+        });
+      
+    },
+
+    addUser(user) {
+      user.validate()
+        .then(({validations}) => {
+          if(validations.get('isValid')) {
+            user.save()
+            .then(() => this.set('showSaved', true));
+          }
+          this.set('didValidate', true);
+          this.send('toggleAddUserModal');
+        });
+      
+    },
+
+    addTasktype(tasktype) {
+      tasktype.validate()
+        .then(({validations}) => {
+          if(validations.get('isValid')) {
+            tasktype.save()
+            .then(() => this.set('showSaved', true));
+          }
+          this.set('didValidate', true);
+          this.send('toggleAddTasktypeModal');
+        });
     }
   }
 });

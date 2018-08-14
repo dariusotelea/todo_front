@@ -66,13 +66,13 @@
 {{#if isShowingAddTaskModal}} {{#modal-dialog onClose="toggleAddTaskModal" targetAttachment="center" translucentOverlay=true}}
 
 <div class="layout layout-sm-column">
-  {{paper-input class="flex" label="Task name" model=newTask valuePath='name' onChange=(action (mut newTask.name))}}
+  {{validated-input type=text didValidate=didValidate label="Task name" model=newTask valuePath='name' onChange=(action (mut newTask.name))}}
 </div>
 <div class="layout layout-sm-column">
-  {{paper-input class="flex" label="Task status" model=newTask valuePath='status' onChange=(action (mut newTask.status))}}
+  {{validated-input type=text didValidate=didValidate label="Task status" model=newTask valuePath='status' onChange=(action (mut newTask.status))}}
 </div>
 <div class="layout layout-sm-column">
-  {{paper-input class="flex" label="Task priority" model=newTask valuePath='priority' onChange=(action (mut newTask.priority))}}
+  {{validated-input type=text didValidate=didValidate label="Task priority" model=newTask valuePath='priority' onChange=(action (mut newTask.priority))}}
 </div>
 <div class="layout  layout-sm-column">
   {{#paper-select placeholder="Choose a category" 
@@ -91,7 +91,7 @@
 
 
 <div class="layout-row">
-  {{#paper-button onClick=(action "addTask" task) class="submit-button" raised=true primary=true}}Submit{{/paper-button}} {{#paper-button
+  {{#paper-button onClick=(action "addTask" newTask) class="submit-button" raised=true primary=true}}Submit{{/paper-button}} {{#paper-button
   onClick=(action "toggleAddTaskModal")}}Cancel{{/paper-button}}
 </div>
 
@@ -100,13 +100,16 @@
 
 <!--ADD USER MODAL-->
 
-{{#if isShowingAddUserModal}} {{#modal-dialog onClose="toggleAddUserModal" argetAttachment="center" translucentOverlay=true}}
+{{#if isShowingAddUserModal}} 
+  {{#modal-dialog onClose="toggleAddUserModal" 
+                  argetAttachment="center" 
+                  translucentOverlay=true}}
 
 <div class="layout layout-sm-column">
-  {{paper-input class="flex" label="User name" model=newUser valuePath='name' onChange=(action (mut newUser.name))}}
+  {{validated-input type=text didValidate=didValidate label="User name" model=newUser valuePath='name' onChange=(action (mut newUser.name))}}
 </div>
 <div class="layout-row">
-  {{#paper-button onClick=(action "toggleAddUserModal") class="submit-button" raised=true primary=true}}Submit{{/paper-button}}
+  {{#paper-button onClick=(action "addUser" newUser) class="submit-button" raised=true primary=true}}Submit{{/paper-button}}
   {{#paper-button onClick=(action "toggleAddUserModal")}}Cancel{{/paper-button}}
 </div>
 
@@ -114,13 +117,16 @@
 
 <!-- ADD TASKTYPE MODAL -->
 
-{{#if isShowingAddTasktypeModal}} {{#modal-dialog onClose="toggleAddUserModal" argetAttachment="center" translucentOverlay=true}}
+{{#if isShowingAddTasktypeModal}} 
+  {{#modal-dialog onClose="toggleAddUserModal" 
+                  argetAttachment="center" 
+                  translucentOverlay=true}}
 
 <div class="layout layout-sm-column">
-  {{paper-input class="flex" label="Task category name" model=newTasktype valuePath='name' onChange=(action (mut tasktype.name))}}
+  {{validated-input type=text didValidate=didValidate placeholder="Task category name" model=newTasktype valuePath='name' onChange=(action (mut newTasktype.name))}}
 </div>
 <div class="layout-row">
-  {{#paper-button onClick=(action "toggleAddTasktypeModal") class="submit-button" raised=true primary=true}}Submit{{/paper-button}}
+  {{#paper-button onClick=(action "addTasktype" newTasktype) class="submit-button" raised=true primary=true}}Submit{{/paper-button}}
   {{#paper-button onClick=(action "toggleAddTasktypeModal")}}Cancel{{/paper-button}}
 </div>
 
