@@ -1,4 +1,5 @@
 <!-- TOOLBAR -->
+
 {{#paper-toolbar}} 
   {{#paper-toolbar-tools class="toolbar"}} 
     {{#link-to 'home'}}
@@ -9,6 +10,7 @@
       {{#paper-button}}{{paper-icon "today" size=20}}Tasks{{/paper-button}}
     {{/link-to}}
     <span class="flex"></span>
+
 
     <!-- SETTINGS DROPDOWN -->
     {{#paper-menu as |menu|}} 
@@ -37,25 +39,25 @@
   </h1>
   <div class="layout-row">
     <div class="flex">
-      {{#paper-card class="card-rounded" as |card|}} {{#card.title as |title|}} {{#title.text as |text|}} {{#text.headline}}{{tasks.length}}{{/text.headline}}
-      {{#text.subhead}}Total number of tasks{{/text.subhead}} {{/title.text}} {{title.media size="lg"src="tasks1.png"}} {{/card.title}}
+      {{#paper-card class="card-rounded1" as |card|}} {{#card.title as |title|}} {{#title.text as |text|}} {{#text.headline}}{{tasks.length}}{{/text.headline}}
+      {{#text.subhead}}Total number of tasks{{/text.subhead}} {{/title.text}} {{paper-icon "language" size=150}}{{/card.title}}
       {{#card.actions}} {{#paper-button}}Go to Tasks{{/paper-button}} {{/card.actions}} {{/paper-card}}
     </div>
     <div class="flex">
-      {{#paper-card class="card-rounded" as |card|}} {{#card.title as |title|}} {{#title.text as |text|}} {{#text.headline}}{{tasks.length}}{{/text.headline}}
-      {{#text.subhead}}Tasks in progress{{/text.subhead}} {{/title.text}} {{title.media size="lg"src="wip.png"}} {{/card.title}}
+      {{#paper-card class="card-rounded2" as |card|}} {{#card.title as |title|}} {{#title.text as |text|}} {{#text.headline}}{{tasks.length}}{{/text.headline}}
+      {{#text.subhead}}Tasks in progress{{/text.subhead}} {{/title.text}} {{paper-icon "settings_backup_restore" size=150}} {{/card.title}}
       {{#card.actions}} {{#paper-button}}Go to Tasks{{/paper-button}} {{/card.actions}} {{/paper-card}}
     </div>
   </div>
   <div class="layout-row">
     <div class="flex">
-      {{#paper-card class="card-rounded" as |card|}} {{#card.title as |title|}} {{#title.text as |text|}} {{#text.headline}}{{tasks.length}}{{/text.headline}}
-      {{#text.subhead}}Completed Tasks{{/text.subhead}} {{/title.text}} {{title.media size="lg"src="tasks1.png"}} {{/card.title}}
+      {{#paper-card class="card-rounded3" as |card|}} {{#card.title as |title|}} {{#title.text as |text|}} {{#text.headline}}{{tasks.length}}{{/text.headline}}
+      {{#text.subhead}}Completed Tasks{{/text.subhead}} {{/title.text}} {{paper-icon "check_circle_outline" size=150}} {{/card.title}}
       {{#card.actions}} {{#paper-button}}Go to Tasks{{/paper-button}} {{/card.actions}} {{/paper-card}}
     </div>
     <div class="flex">
-      {{#paper-card class="card-rounded" as |card|}} {{#card.title as |title|}} {{#title.text as |text|}} {{#text.headline}}{{tasks.length}}{{/text.headline}}
-      {{#text.subhead}}Tasks not started{{/text.subhead}} {{/title.text}} {{title.media size="lg"src="wip.png"}} {{/card.title}}
+      {{#paper-card class="card-rounded4" as |card|}} {{#card.title as |title|}} {{#title.text as |text|}} {{#text.headline}}{{users.length}}{{/text.headline}}
+      {{#text.subhead}}Total number of users{{/text.subhead}} {{/title.text}} {{paper-icon "account_circle" size=150}} {{/card.title}}
       {{#card.actions}} {{#paper-button}}Go to Tasks{{/paper-button}} {{/card.actions}} {{/paper-card}}
     </div>
   </div>
@@ -63,7 +65,10 @@
 </div>
 
 <!-- ADD TASK MODAL -->
-{{#if isShowingAddTaskModal}} {{#modal-dialog onClose="toggleAddTaskModal" targetAttachment="center" translucentOverlay=true}}
+{{#if isShowingAddTaskModal}} 
+{{#modal-dialog onClose="toggleAddTaskModal" 
+                targetAttachment="center" 
+                translucentOverlay=true}}
 
 <div class="layout layout-sm-column">
   {{validated-input type=text didValidate=didValidate label="Task name" model=newTask valuePath='name' onChange=(action (mut newTask.name))}}
@@ -123,7 +128,7 @@
                   translucentOverlay=true}}
 
 <div class="layout layout-sm-column">
-  {{validated-input type=text didValidate=didValidate placeholder="Task category name" model=newTasktype valuePath='name' onChange=(action (mut newTasktype.name))}}
+  {{validated-input type=text didValidate=didValidate label="Task category name" model=newTasktype valuePath='name' onChange=(action (mut newTasktype.name))}}
 </div>
 <div class="layout-row">
   {{#paper-button onClick=(action "addTasktype" newTasktype) class="submit-button" raised=true primary=true}}Submit{{/paper-button}}

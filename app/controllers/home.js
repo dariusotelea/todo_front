@@ -37,6 +37,7 @@ export default Controller.extend({
 
 
 
+
   actions: {
     getTasksByTasktypeId(tasktype) {
       this.set('tasksFiltered', tasktype.get('tasks'))
@@ -55,7 +56,6 @@ export default Controller.extend({
     },
     
     addTask(task) {
-      debugger
       task.validate()
         .then(({validations}) => {
           if(validations.get('isValid')) {
@@ -67,6 +67,8 @@ export default Controller.extend({
         });
       
     },
+
+   
 
     addUser(user) {
       user.validate()
