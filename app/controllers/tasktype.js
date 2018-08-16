@@ -2,6 +2,7 @@ import Controller from "@ember/controller";
 import { computed } from "@ember/object";
 
 export default Controller.extend({
+  ajax: Ember.inject.service(),
 
 
   selectedUser: null,
@@ -38,7 +39,6 @@ export default Controller.extend({
     },
 
     toggleEditTaskModal: function(task) {
-      debugger
       this.set('selectedTask', task);
       this.toggleProperty('isShowingEditTaskModal');
     },
@@ -66,6 +66,30 @@ export default Controller.extend({
           this.send('toggleAddTaskModal')
         });
       
+    },
+
+    deleteTask(taskId) {
+      this.store.findRecord('task', taskId, {backgroundReload:false}).then(function(task){
+        task.deleteRecord();
+        task.get('isDeleted');
+        task.save();
+      });
+    },
+
+    deleteUser(userId) {
+      this.store.findRecord('user', userId, { backgroundReload:false }).then(function(user) {
+      user.deleteRecord();
+      user.get('isDeleted');
+      user.save();
+      });
+    },
+
+    deleteTasktype(tasktypeId) {
+      this.store.findRecord('tasktype', tasktypeId, { backgroundReload: false }).then(function(tasktype){
+        tasktype.deleteRecord();
+        tasktype.get('isDeleted');
+        tasktype.save();
+      });
     },
 
    

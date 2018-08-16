@@ -35,32 +35,44 @@
 <div class="flex">
   {{#paper-content class = "md-padding"}}
   <h1>
-    TodoApp - Dashboard
+    TodoApp Pro - Dashboard
   </h1>
   <div class="layout-row">
     <div class="flex">
       {{#paper-card class="card-rounded1" as |card|}} {{#card.title as |title|}} {{#title.text as |text|}} {{#text.headline}}{{tasks.length}}{{/text.headline}}
       {{#text.subhead}}Total number of tasks{{/text.subhead}} {{/title.text}} {{paper-icon "language" size=150}}{{/card.title}}
-      {{#card.actions}} {{#paper-button}}Go to Tasks{{/paper-button}} {{/card.actions}} {{/paper-card}}
+      {{/paper-card}}
     </div>
     <div class="flex">
       {{#paper-card class="card-rounded2" as |card|}} {{#card.title as |title|}} {{#title.text as |text|}} {{#text.headline}}{{tasks.length}}{{/text.headline}}
       {{#text.subhead}}Tasks in progress{{/text.subhead}} {{/title.text}} {{paper-icon "settings_backup_restore" size=150}} {{/card.title}}
-      {{#card.actions}} {{#paper-button}}Go to Tasks{{/paper-button}} {{/card.actions}} {{/paper-card}}
+      {{/paper-card}}
     </div>
   </div>
   <div class="layout-row">
     <div class="flex">
       {{#paper-card class="card-rounded3" as |card|}} {{#card.title as |title|}} {{#title.text as |text|}} {{#text.headline}}{{tasks.length}}{{/text.headline}}
       {{#text.subhead}}Completed Tasks{{/text.subhead}} {{/title.text}} {{paper-icon "check_circle_outline" size=150}} {{/card.title}}
-      {{#card.actions}} {{#paper-button}}Go to Tasks{{/paper-button}} {{/card.actions}} {{/paper-card}}
+      {{/paper-card}}
     </div>
     <div class="flex">
       {{#paper-card class="card-rounded4" as |card|}} {{#card.title as |title|}} {{#title.text as |text|}} {{#text.headline}}{{users.length}}{{/text.headline}}
       {{#text.subhead}}Total number of users{{/text.subhead}} {{/title.text}} {{paper-icon "account_circle" size=150}} {{/card.title}}
-      {{#card.actions}} {{#paper-button}}Go to Tasks{{/paper-button}} {{/card.actions}} {{/paper-card}}
+      {{/paper-card}}
     </div>
   </div>
+    <div class="layout-row">
+      <div class="layout-align-center flex-50">
+        <h2>Edit Users</h2>
+      </div>
+      <div class="layout-align-center">
+        <h2>Edit Tasktypes</h2>
+      </div>
+    </div>
+    <div class="layout layout-align-center-center">
+      {{#link-to 'tasktype'}}{{paper-icon "exit_to_app" size=150}}{{/link-to}}   
+    </div>
+    
   {{/paper-content}}
 </div>
 

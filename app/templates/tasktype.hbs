@@ -33,34 +33,57 @@
 
 
 
-<div class="flex-25">
+<div class="flex">
   {{#paper-content class="md-padding"}}
-    <h1>
-      Tasks
-    </h1>
-    {{#paper-list}} 
+    <h1>Tasks</h1>
+    {{#paper-item class="layout layout-md-line"}}
+      <div class="flex-50"> 
+        <strong>Task name</strong> 
+      </div>
+      <div class="flex-25">  
+        <strong>Task type</strong>
+      </div>
+      <div class="flex-20">  
+        <strong>Assigned to</strong>
+      </div>
+      <div class="flex">
+        <strong>Edit</strong>
+      </div>
+      
+        <strong>Delete</strong>
+      
+    {{/paper-item}}
+    {{paper-divider}}
       {{#each tasks as |task|}} 
-        {{#paper-item class="md-3-line"}}
-          <div class="md-list-item-text">           
+        {{#paper-item class="layout layout-md-line"}}
+            
+            <div class="flex-50">   
               {{task.name}}
+            </div>
+            <div class="flex-25">
               {{task.tasktype.name}}
+            </div>
+            <div class="flex-20">
               {{task.user.name}}
-               
-         
-                
-             
-           
-              {{#paper-button iconButton=true 
+            </div>
+    
+          
+              {{#paper-button class="flex-" iconButton=true 
                               onClick=(action "toggleEditTaskModal" task)}}
                               {{paper-icon "edit" size=16}}
               {{/paper-button}}
+              {{#paper-button onClick=(action "deleteTask" task.id) 
+                              iconButton=true}}
+                              {{paper-icon "clear" size=16}}
+              {{/paper-button}}
             {{paper-divider}}
-          </div>
+
         {{/paper-item}} 
-      {{/each}} 
-    {{/paper-list}} 
+      {{/each}}  
   {{/paper-content}}
 </div>
+
+
 {{!-- Edit Task Modal --}}
 {{#if isShowingEditTaskModal}}
   {{#modal-dialog onClose="toggleEditTaskModal"
