@@ -13,6 +13,10 @@ export default Controller.extend({
   isShowingEditTasktypeModal: null,
   isShowingEditUserModal: null,
 
+  isShowingAddTaskModal: false,
+  isShowingAddUserModal: false,
+  isShowingAddTasktypeModal: false,
+
   tasks: computed(function () {
     return this.get("store").findAll("task");
   }),
@@ -23,6 +27,18 @@ export default Controller.extend({
 
   tasktypes: computed(function () {
     return this.get("store").findAll("tasktype");
+  }),
+
+  newTask: computed(function () {
+    return this.store.createRecord('task');
+  }),
+
+  newUser: computed(function () {
+    return this.store.createRecord('user');
+  }),
+
+  newTasktype: computed(function () {
+    return this.store.createRecord('tasktype');
   }),
 
   actions: {
