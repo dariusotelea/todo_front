@@ -1,0 +1,184 @@
+<!-- TOOLBAR -->
+
+{{#paper-toolbar}} 
+  {{#paper-toolbar-tools class="toolbar"}} 
+    {{#link-to 'home'}}
+      {{#paper-button}}{{paper-icon "home" size=20}}Home{{/paper-button}}
+    {{/link-to}}
+
+    {{#link-to 'tasktype'}}
+      {{#paper-button}}{{paper-icon "today" size=20}}Tasks{{/paper-button}}
+    {{/link-to}}
+
+    {{#link-to 'users'}}
+      {{#paper-button}}{{paper-icon "face" size=20}}Users{{/paper-button}}
+    {{/link-to}}
+
+    {{#link-to 'tasktypeditor'}}
+      {{#paper-button}}{{paper-icon "assignment" size=20}}Tasktpyes{{/paper-button}}
+    {{/link-to}}
+    <span class="flex"></span>
+
+
+
+     <!-- SETTINGS DROPDOWN -->
+    {{#paper-menu as |menu|}} 
+      {{#menu.trigger}} 
+        {{#paper-button iconButton=true}} {{paper-icon "settings"}} {{/paper-button}}
+      {{/menu.trigger}} 
+      {{#menu.content as |content|}} 
+        {{#content.menu-item onClick="toggleAddTasktypeModal"}}
+          <span>Create Task Type</span>
+        {{/content.menu-item}} {{#content.menu-item onClick="toggleAddTaskModal"}}
+          <span>Create Task</span>
+        {{/content.menu-item}} {{#content.menu-item onClick="toggleAddUserModal"}}
+          <span>Create User</span>
+        {{/content.menu-item}} 
+      {{/menu.content}} 
+    {{/paper-menu}} 
+  {{/paper-toolbar-tools}} 
+{{/paper-toolbar}}
+
+
+
+<div class="flex">
+  {{#paper-content class="md-padding"}}
+    <h1>Users</h1>
+    {{#paper-item class="layout layout-md-line"}}
+      <div class="flex-95"> 
+        <strong>User name</strong> 
+      </div>
+     
+      <div class="flex">
+        <strong>Edit</strong>
+      </div>
+        <strong>Delete</strong>
+     
+      
+    {{/paper-item}}
+    {{paper-divider}}
+      {{#each users as |user|}} 
+        {{#paper-item class="layout layout-md-line"}}
+            
+            <div class="flex-50">   
+              {{user.name}}
+            </div>
+            <div class="flex-25">
+              {{task.tasktype.name}}
+            </div>
+            <div class="flex-20">
+              {{task.user.name}}
+            </div>
+    
+          
+              {{#paper-button class="flex-" iconButton=true 
+                              onClick=(action "toggleEditUserModal" user)}}
+                              {{paper-icon "edit" size=16}}
+              {{/paper-button}}
+              {{#paper-button onClick=(action "deleteUser" user.id) 
+                              iconButton=true}}
+                              {{paper-icon "clear" size=16}}
+              {{/paper-button}}
+            {{paper-divider}}
+
+        {{/paper-item}} 
+      {{/each}}  
+  {{/paper-content}}
+</div>
+
+{{!-- ADDING MODALS --}}
+
+
+    <!-- ADD TASK MODAL -->
+    {{#if isShowingAddTaskModal}} 
+    {{#modal-dialog onClose="toggleAddTaskModal" 
+                    targetAttachment="center" 
+                    translucentOverlay=true}}
+
+    <div class="layout layout-sm-column">
+      {{validated-input type=text didValidate=didValidate label="Task name" model=newTask valuePath='name' onChange=(action (mut newTask.name))}}
+    </div>
+    <div class="layout layout-sm-column">
+      {{validated-input type=text didValidate=didValidate label="Task status" model=newTask valuePath='status' onChange=(action (mut newTask.status))}}
+    </div>
+    <div class="layout layout-sm-column">
+      {{validated-input type=text didValidate=didValidate label="Task priority" model=newTask valuePath='priority' onChange=(action (mut newTask.priority))}}
+    </div>
+    <div class="layout  layout-sm-column">
+      {{#paper-select placeholder="Choose a category" 
+                      selected= newTask.tasktype 
+                      options = tasktypes 
+                      valuePath='name' 
+                      onChange=(action (mut newTask.tasktype)) as |tasktype|}} {{tasktype.name}} {{/paper-select}}
+    </div>
+
+    <div class="layout  layout-sm-column">
+      {{#paper-select placeholder="Asign to user" 
+                      selected= newTask.user 
+                      options = users 
+                      onChange=(action (mut newTask.user)) as |user|}} {{user.name}} {{/paper-select}}
+    </div>
+
+
+    <div class="layout-row">
+      {{#paper-button onClick=(action "addTask" newTask) class="submit-button" raised=true primary=true}}Submit{{/paper-button}} {{#paper-button
+      onClick=(action "toggleAddTaskModal")}}Cancel{{/paper-button}}
+    </div>
+
+    {{/modal-dialog}} {{/if}}
+
+
+    <!--ADD USER MODAL-->
+
+    {{#if isShowingAddUserModal}} 
+      {{#modal-dialog onClose="toggleAddUserModal" 
+                      argetAttachment="center" 
+                      translucentOverlay=true}}
+
+    <div class="layout layout-sm-column">
+      {{validated-input type=text didValidate=didValidate label="User name" model=newUser valuePath='name' onChange=(action (mut newUser.name))}}
+    </div>
+    <div class="layout-row">
+      {{#paper-button onClick=(action "addUser" newUser) class="submit-button" raised=true primary=true}}Submit{{/paper-button}}
+      {{#paper-button onClick=(action "toggleAddUserModal")}}Cancel{{/paper-button}}
+    </div>
+
+    {{/modal-dialog}} {{/if}}
+
+    <!-- ADD TASKTYPE MODAL -->
+
+    {{#if isShowingAddTasktypeModal}} 
+      {{#modal-dialog onClose="toggleAddUserModal" 
+                      argetAttachment="center" 
+                      translucentOverlay=true}}
+
+    <div class="layout layout-sm-column">
+      {{validated-input type=text didValidate=didValidate label="Task category name" model=newTasktype valuePath='name' onChange=(action (mut newTasktype.name))}}
+    </div>
+    <div class="layout-row">
+      {{#paper-button onClick=(action "addTasktype" newTasktype) class="submit-button" raised=true primary=true}}Submit{{/paper-button}}
+      {{#paper-button onClick=(action "toggleAddTasktypeModal")}}Cancel{{/paper-button}}
+    </div>
+
+     {{/modal-dialog}} 
+    {{/if}}
+
+<!-- EDIT MODALS -->
+
+    <!-- EDIT USER MODAL -->
+
+    {{#if isShowingEditUserModal}}
+      {{#modal-dialog onClose="toggleEditUserModal"
+                      targetAttachment="center"
+                      translucentOverlay=true}}
+      
+      <div class="layout layout-sm-column">
+        {{validated-input type=text didValidate=didValidate label="User name" model=selectedUser valuePath='name' onChange=(action (mut selectedUser.name))}}
+      </div>
+      <div class="layout-row">
+        {{#paper-button onClick=(action "updateUser" selectedUser) class="submit-button" raised=true primary=true}}Save{{/paper-button}}
+        {{#paper-button onClick=(action "toggleEditUserModal")}}Cancel{{/paper-button}}
+
+      </div>
+      {{/modal-dialog}}
+    {{/if}}

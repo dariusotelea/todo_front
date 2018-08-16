@@ -9,6 +9,14 @@
     {{#link-to 'tasktype'}}
       {{#paper-button}}{{paper-icon "today" size=20}}Tasks{{/paper-button}}
     {{/link-to}}
+
+    {{#link-to 'users'}}
+      {{#paper-button}}{{paper-icon "face" size=20}}Users{{/paper-button}}
+    {{/link-to}}
+
+    {{#link-to 'tasktypeditor'}}
+      {{#paper-button}}{{paper-icon "assignment" size=20}}Tasktpyes{{/paper-button}}
+    {{/link-to}}
     <span class="flex"></span>
 
 
@@ -113,8 +121,8 @@
                   onChange=(action (mut selectedTask.user)) as |user|}} {{user.name}} {{/paper-select}}
 </div>
 <div class="layout-row">
-  {{#paper-button onClick=(action "updateTask" selectedTask) class="submit-button" raised=true primary=true}}Save{{/paper-button}} {{#paper-button
-  onClick=(action "toggleEditTaskModal")}}Cancel{{/paper-button}}
+  {{#paper-button onClick=(action "updateTask" selectedTask) class="submit-button" raised=true primary=true}}Save{{/paper-button}} 
+  {{#paper-button onClick=(action "toggleEditTaskModal")}}Cancel{{/paper-button}}
 </div>
   {{/modal-dialog}}
 {{/if}}

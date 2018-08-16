@@ -9,6 +9,8 @@ const Router = EmberRouter.extend({
 Router.map(function () {
   this.route('home');
   this.route('tasktype');
+  this.route('users');
+  this.route('tasktypeditor');
 });
 
 export default Router;

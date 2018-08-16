@@ -9,6 +9,14 @@
     {{#link-to 'tasktype'}}
       {{#paper-button}}{{paper-icon "today" size=20}}Tasks{{/paper-button}}
     {{/link-to}}
+
+    {{#link-to 'users'}}
+      {{#paper-button}}{{paper-icon "face" size=20}}Users{{/paper-button}}
+    {{/link-to}}
+
+    {{#link-to 'tasktypeditor'}}
+      {{#paper-button}}{{paper-icon "assignment" size=20}}Tasktpyes{{/paper-button}}
+    {{/link-to}}
     <span class="flex"></span>
 
 
@@ -61,14 +69,7 @@
       {{/paper-card}}
     </div>
   </div>
-    <div class="layout-row">
-      <div class="layout-align-center flex-50">
-        <h2>Edit Users</h2>
-      </div>
-      <div class="layout-align-center">
-        <h2>Edit Tasktypes</h2>
-      </div>
-    </div>
+    
     <div class="layout layout-align-center-center">
       {{#link-to 'tasktype'}}{{paper-icon "exit_to_app" size=150}}{{/link-to}}   
     </div>
