@@ -45,8 +45,14 @@
   {{#paper-content class="md-padding"}}
     <h1>Tasks</h1>
     {{#paper-item class="layout layout-md-line"}}
-      <div class="flex-50"> 
+      <div class="flex-20"> 
         <strong>Task name</strong> 
+      </div>
+      <div class="flex-15">
+        <strong>Status</strong>
+      </div>
+      <div class="flex-15">
+        <strong>Priority</strong>
       </div>
       <div class="flex-25">  
         <strong>Task type</strong>
@@ -65,8 +71,14 @@
       {{#each tasks as |task|}} 
         {{#paper-item class="layout layout-md-line"}}
             
-            <div class="flex-50">   
+            <div class="flex-20">   
               {{task.name}}
+            </div>
+            <div class="flex-15">
+              {{task.status}}
+            </div>
+            <div class="flex-15">
+              {{task.priority}}
             </div>
             <div class="flex-25">
               {{task.tasktype.name}}
@@ -101,10 +113,24 @@
   {{validated-input type=text didValidate=didValidate label="Task name" model=selectedTask valuePath='name' onChange=(action (mut selectedTask.name))}}
 </div>
 <div class="layout layout-sm-column">
-  {{validated-input type=text didValidate=didValidate label="Task status" model=selectedTask valuePath='status' onChange=(action (mut selectedTask.status))}}
+  {{#paper-select placeholder="Task status"
+                  options=statusOptions
+                  selected=selectedTask.status
+                  required=true
+                  model=selectedTask
+                  onChange=(action (mut selectedTask.status)) as |statusOptions|
+                  }}{{statusOptions}}{{/paper-select}}
+ 
 </div>
 <div class="layout layout-sm-column">
-  {{validated-input type=text didValidate=didValidate label="Task priority" model=selectedTask valuePath='priority' onChange=(action (mut selectedTask.priority))}}
+   {{#paper-select placeholder="Task priority"
+                   options=priorityOptions
+                   selected=selectedTask.priority
+                   required=true
+                   model=selectedTask
+                   onChange=(action (mut selectedTask.priority)) as |priorityOptions|
+                   
+                  }}{{priorityOptions}}{{/paper-select}}
 </div>
 <div class="layout  layout-sm-column">
   {{#paper-select placeholder="Choose a category" 
@@ -137,10 +163,24 @@
   {{validated-input type=text didValidate=didValidate label="Task name" model=newTask valuePath='name' onChange=(action (mut newTask.name))}}
 </div>
 <div class="layout layout-sm-column">
-  {{validated-input type=text didValidate=didValidate label="Task status" model=newTask valuePath='status' onChange=(action (mut newTask.status))}}
+  {{#paper-select placeholder="Task status"
+                  options=statusOptions
+                  selected=newTask.status
+                  required=true
+                  model=newTask
+                  onChange=(action (mut newTask.status)) as |statusOptions|
+                  }}{{statusOptions}}{{/paper-select}}
+ 
 </div>
 <div class="layout layout-sm-column">
-  {{validated-input type=text didValidate=didValidate label="Task priority" model=newTask valuePath='priority' onChange=(action (mut newTask.priority))}}
+   {{#paper-select placeholder="Task priority"
+                   options=priorityOptions
+                   selected=newTask.priority
+                   required=true
+                   model=newTask
+                   onChange=(action (mut newTask.priority)) as |priorityOptions|
+                   
+                  }}{{priorityOptions}}{{/paper-select}}
 </div>
 <div class="layout  layout-sm-column">
   {{#paper-select placeholder="Choose a category" 

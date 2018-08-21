@@ -4,7 +4,8 @@ import { computed } from "@ember/object";
 export default Controller.extend({
   ajax: Ember.inject.service(),
 
-
+  statusOptions: ['Not started', 'In progress','Ended'],
+  priorityOptions: ["Low", "Medium", "High"],
   selectedUser: null,
   selectedTask: null,
   selectedTasktype: null,

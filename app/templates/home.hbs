@@ -45,7 +45,7 @@
   <h1>
     TodoApp Pro - Dashboard
   </h1>
-  <div class="layout-row">
+  <div class="layout-row layout-xs-column layout-align-center-center center-list">
     <div class="flex">
       {{#paper-card class="card-rounded1" as |card|}} {{#card.title as |title|}} {{#title.text as |text|}} {{#text.headline}}{{tasks.length}}{{/text.headline}}
       {{#text.subhead}}Total number of tasks{{/text.subhead}} {{/title.text}} {{paper-icon "language" size=150}}{{/card.title}}
@@ -57,7 +57,7 @@
       {{/paper-card}}
     </div>
   </div>
-  <div class="layout-row">
+  <div class="layout-row layout-xs-column layout-align-center-center center-list">
     <div class="flex">
       {{#paper-card class="card-rounded3" as |card|}} {{#card.title as |title|}} {{#title.text as |text|}} {{#text.headline}}{{tasks.length}}{{/text.headline}}
       {{#text.subhead}}Completed Tasks{{/text.subhead}} {{/title.text}} {{paper-icon "check_circle_outline" size=150}} {{/card.title}}
@@ -69,11 +69,7 @@
       {{/paper-card}}
     </div>
   </div>
-    
-    <div class="layout layout-align-center-center">
-      {{#link-to 'tasktype'}}{{paper-icon "exit_to_app" size=150}}{{/link-to}}   
-    </div>
-    
+     
   {{/paper-content}}
 </div>
 
@@ -87,10 +83,26 @@
   {{validated-input type=text didValidate=didValidate label="Task name" model=newTask valuePath='name' onChange=(action (mut newTask.name))}}
 </div>
 <div class="layout layout-sm-column">
-  {{validated-input type=text didValidate=didValidate label="Task status" model=newTask valuePath='status' onChange=(action (mut newTask.status))}}
+  {{!-- {{validated-input type=text didValidate=didValidate label="Task status" model=newTask valuePath='status' onChange=(action (mut newTask.status))}} --}}
+  {{#paper-select placeholder="Task status"
+                  options=statusOptions
+                  selected=newTask.status
+                  required=true
+                  model=newTask
+                  onChange=(action (mut newTask.status)) as |statusOptions|
+                  }}{{statusOptions}}{{/paper-select}}
+ 
 </div>
 <div class="layout layout-sm-column">
-  {{validated-input type=text didValidate=didValidate label="Task priority" model=newTask valuePath='priority' onChange=(action (mut newTask.priority))}}
+  {{!-- {{validated-input type=text didValidate=didValidate label="Task priority" model=newTask valuePath='priority' onChange=(action (mut newTask.priority))}} --}}
+   {{#paper-select placeholder="Task priority"
+                   options=priorityOptions
+                   selected=newTask.priority
+                   required=true
+                   model=newTask
+                   onChange=(action (mut newTask.priority)) as |priorityOptions|
+                   
+                  }}{{priorityOptions}}{{/paper-select}}
 </div>
 <div class="layout  layout-sm-column">
   {{#paper-select placeholder="Choose a category" 

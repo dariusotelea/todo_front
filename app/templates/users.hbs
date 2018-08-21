@@ -99,11 +99,25 @@
       {{validated-input type=text didValidate=didValidate label="Task name" model=newTask valuePath='name' onChange=(action (mut newTask.name))}}
     </div>
     <div class="layout layout-sm-column">
-      {{validated-input type=text didValidate=didValidate label="Task status" model=newTask valuePath='status' onChange=(action (mut newTask.status))}}
-    </div>
-    <div class="layout layout-sm-column">
-      {{validated-input type=text didValidate=didValidate label="Task priority" model=newTask valuePath='priority' onChange=(action (mut newTask.priority))}}
-    </div>
+  {{#paper-select placeholder="Task status"
+                  options=statusOptions
+                  selected=newTask.status
+                  required=true
+                  model=newTask
+                  onChange=(action (mut newTask.status)) as |statusOptions|
+                  }}{{statusOptions}}{{/paper-select}}
+ 
+</div>
+<div class="layout layout-sm-column">
+   {{#paper-select placeholder="Task priority"
+                   options=priorityOptions
+                   selected=newTask.priority
+                   required=true
+                   model=newTask
+                   onChange=(action (mut newTask.priority)) as |priorityOptions|
+                   
+                  }}{{priorityOptions}}{{/paper-select}}
+</div>
     <div class="layout  layout-sm-column">
       {{#paper-select placeholder="Choose a category" 
                       selected= newTask.tasktype 

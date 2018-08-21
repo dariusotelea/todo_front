@@ -5,6 +5,9 @@ import { computed } from '@ember/object';
 export default Controller.extend({
   ajax: Ember.inject.service(),
 
+  statusOptions: ['Not started', 'In progress','Ended'],
+  priorityOptions: ["Low", "Medium", "High"],
+
   tasks: computed(function () {
     return this.get('store').findAll('task');
   }),
