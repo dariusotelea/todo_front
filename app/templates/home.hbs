@@ -69,7 +69,9 @@
       {{/paper-card}}
     </div>
   </div>
-     
+    <div class="layout-row layout-align-center">
+      {{#paper-button onClick=(action "sendRequest" iconButton=true)}}{{paper-icon "send" size=18}} Slack Report{{/paper-button}}
+    </div>
   {{/paper-content}}
 </div>
 

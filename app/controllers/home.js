@@ -42,6 +42,12 @@ export default Controller.extend({
 
 
   actions: {
+    sendRequest() {
+      return this.get('ajax').request('tasks/create_report', {
+        method: 'GET'       
+      });
+    },
+
     getTasksByTasktypeId(tasktype) {
       this.set('tasksFiltered', tasktype.get('tasks'))
     },
