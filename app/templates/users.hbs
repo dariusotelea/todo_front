@@ -57,7 +57,7 @@
       
     {{/paper-item}}
     {{paper-divider}}
-      {{#each users as |user|}} 
+      {{#each validUsers as |user|}} 
         {{#paper-item class="layout layout-md-line"}}
             
             <div class="flex-50">   
@@ -91,7 +91,7 @@
 
     <!-- ADD TASK MODAL -->
     {{#if isShowingAddTaskModal}} 
-    {{#modal-dialog onClose="toggleAddTaskModal" 
+    {{#modal-dialog onClose="cancelAddTaskModal" 
                     targetAttachment="center" 
                     translucentOverlay=true}}
 
@@ -136,7 +136,7 @@
 
     <div class="layout-row">
       {{#paper-button onClick=(action "addTask" newTask) class="submit-button" raised=true primary=true}}Submit{{/paper-button}} {{#paper-button
-      onClick=(action "toggleAddTaskModal")}}Cancel{{/paper-button}}
+      onClick=(action "cancelAddTaskModal")}}Cancel{{/paper-button}}
     </div>
 
     {{/modal-dialog}} {{/if}}
@@ -145,7 +145,7 @@
     <!--ADD USER MODAL-->
 
     {{#if isShowingAddUserModal}} 
-      {{#modal-dialog onClose="toggleAddUserModal" 
+      {{#modal-dialog onClose="cancelAddUserModal" 
                       argetAttachment="center" 
                       translucentOverlay=true}}
 
@@ -154,7 +154,7 @@
     </div>
     <div class="layout-row">
       {{#paper-button onClick=(action "addUser" newUser) class="submit-button" raised=true primary=true}}Submit{{/paper-button}}
-      {{#paper-button onClick=(action "toggleAddUserModal")}}Cancel{{/paper-button}}
+      {{#paper-button onClick=(action "cancelAddUserModal")}}Cancel{{/paper-button}}
     </div>
 
     {{/modal-dialog}} {{/if}}
@@ -162,7 +162,7 @@
     <!-- ADD TASKTYPE MODAL -->
 
     {{#if isShowingAddTasktypeModal}} 
-      {{#modal-dialog onClose="toggleAddUserModal" 
+      {{#modal-dialog onClose="cancelAddUserModal" 
                       argetAttachment="center" 
                       translucentOverlay=true}}
 
@@ -171,7 +171,7 @@
     </div>
     <div class="layout-row">
       {{#paper-button onClick=(action "addTasktype" newTasktype) class="submit-button" raised=true primary=true}}Submit{{/paper-button}}
-      {{#paper-button onClick=(action "toggleAddTasktypeModal")}}Cancel{{/paper-button}}
+      {{#paper-button onClick=(action "cancelAddTasktypeModal")}}Cancel{{/paper-button}}
     </div>
 
      {{/modal-dialog}} 
@@ -191,7 +191,7 @@
       </div>
       <div class="layout-row">
         {{#paper-button onClick=(action "updateUser" selectedUser) class="submit-button" raised=true primary=true}}Save{{/paper-button}}
-        {{#paper-button onClick=(action "toggleEditUserModal")}}Cancel{{/paper-button}}
+        {{#paper-button onClick=(action "cancelEditUserModal")}}Cancel{{/paper-button}}
 
       </div>
       {{/modal-dialog}}

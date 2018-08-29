@@ -18,6 +18,16 @@ export default Controller.extend({
   isShowingAddUserModal: false,
   isShowingAddTasktypeModal: false,
 
+  notStartedTasks: computed('tasks.length', 'tasks.@each.status', function() {
+    return this.get('tasks').filterBy('status', 'Not started')
+  }),
+  inProgressTasks: computed('tasks.length', 'tasks.@each.status', function() {
+    return this.get('tasks').filterBy('status', 'In progress')
+  }),
+  endedTasks: computed('tasks.length', 'tasks.@each.status', function() {
+    return this.get('tasks').filterBy('status', 'Ended')
+  }),
+
   tasks: computed(function () {
     return this.get("store").findAll("task");
   }),
@@ -28,6 +38,18 @@ export default Controller.extend({
 
   tasktypes: computed(function () {
     return this.get("store").findAll("tasktype");
+  }),
+
+  validTasktypes: computed('tasktypes.length', function(){
+    const validTasktypes = [];
+    this.get('tasktypes').then(tasktypes => {
+      tasktypes.forEach(function(tasktype) {
+        if (tasktype.name != null){
+          validTasktypes.pushObject(tasktype);
+        }
+      });
+    });
+    return validTasktypes;
   }),
 
   newTask: computed(function () {
@@ -44,15 +66,31 @@ export default Controller.extend({
 
   actions: {
     toggleAddTaskModal: function () {
-      this.toggleProperty('isShowingAddTaskModal');
+      this.set('isShowingAddTaskModal', true);
+    },
+
+    cancelAddTaskModal: function () {
+      this.set('isShowingAddTaskModal', false);
+      this.get('newTask').deleteRecord();
+      
     },
 
     toggleAddUserModal: function () {
-      this.toggleProperty('isShowingAddUserModal');
+      this.set('isShowingAddUserModal', true);
+    },
+
+    cancelAddUserModal: function() {
+      this.set('isShowingAddUserModal', false);
+      this.get('newUser').deleteRecord();
     },
 
     toggleAddTasktypeModal: function () {
-      this.toggleProperty('isShowingAddTasktypeModal');
+      this.set('isShowingAddTasktypeModal', true);
+    },
+
+    cancelAddTasktypeModal: function() {
+      this.set('isShowingAddTasktypeModal', false);
+      this.get('newTasktype').deleteRecord();
     },
 
     toggleEditTaskModal: function(task) {
@@ -73,25 +111,28 @@ export default Controller.extend({
     
     addTask(task) {
       task.validate()
-        .then(({validations}) => {
+        .then(({ validations }) => {
           if(validations.get('isValid')) {
             task.save()
             .then(() => this.set('showSaved', true));
+            this.set('isShowingAddTaskModal', false);
+            this.set('newTask', this.store.createRecord('task'));
           }
           this.set('didValidate', true);
-          this.send('toggleAddTaskModal')
-        });
-      
+        });   
     },
+    
     addUser(user) {
       user.validate()
         .then(({validations}) => {
           if(validations.get('isValid')) {
             user.save()
             .then(() => this.set('showSaved', true));
+            this.set('isShowingAddUserModal', false);
+            this.set('newUser', this.store.createRecord('user'));
           }
           this.set('didValidate', true);
-          this.send('toggleAddUserModal');
+          
         });
       
     },
@@ -101,9 +142,11 @@ export default Controller.extend({
           if(validations.get('isValid')) {
             tasktype.save()
             .then(() => this.set('showSaved', true));
+            this.set('isShowingAddTasktypeModal', false);
+            this.set('newTasktype', this.store.createRecord('tasktype'));
           }
           this.set('didValidate', true);
-          this.send('toggleAddTasktypeModal');
+          
         });
     },
 

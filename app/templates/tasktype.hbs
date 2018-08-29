@@ -68,7 +68,8 @@
       
     {{/paper-item}}
     {{paper-divider}}
-      {{#each tasks as |task|}} 
+    {{!-- Display not started tasks --}}
+      {{#each notStartedTasks as |task|}} 
         {{#paper-item class="layout layout-md-line"}}
             
             <div class="flex-20">   
@@ -99,7 +100,73 @@
             {{paper-divider}}
 
         {{/paper-item}} 
-      {{/each}}  
+      {{/each}}
+    {{!-- Display in progress tasks  --}}
+      {{#each inProgressTasks as |task|}} 
+        {{#paper-item class="layout layout-md-line"}}
+            
+            <div class="flex-20">   
+              {{task.name}}
+            </div>
+            <div class="flex-15">
+              {{task.status}}
+            </div>
+            <div class="flex-15">
+              {{task.priority}}
+            </div>
+            <div class="flex-25">
+              {{task.tasktype.name}}
+            </div>
+            <div class="flex-20">
+              {{task.user.name}}
+            </div>
+    
+          
+              {{#paper-button class="flex-" iconButton=true 
+                              onClick=(action "toggleEditTaskModal" task)}}
+                              {{paper-icon "edit" size=16}}
+              {{/paper-button}}
+              {{#paper-button onClick=(action "deleteTask" task.id) 
+                              iconButton=true}}
+                              {{paper-icon "clear" size=16}}
+              {{/paper-button}}
+            {{paper-divider}}
+
+        {{/paper-item}} 
+      {{/each}}
+      {{!-- Display ended tasks --}}
+      {{#each endedTasks as |task|}} 
+        {{#paper-item class="layout layout-md-line"}}
+            
+            <div class="flex-20">   
+              {{task.name}}
+            </div>
+            <div class="flex-15">
+              {{task.status}}
+            </div>
+            <div class="flex-15">
+              {{task.priority}}
+            </div>
+            <div class="flex-25">
+              {{task.tasktype.name}}
+            </div>
+            <div class="flex-20">
+              {{task.user.name}}
+            </div>
+    
+          
+              {{#paper-button class="flex-" iconButton=true 
+                              onClick=(action "toggleEditTaskModal" task)}}
+                              {{paper-icon "edit" size=16}}
+              {{/paper-button}}
+              {{#paper-button onClick=(action "deleteTask" task.id) 
+                              iconButton=true}}
+                              {{paper-icon "clear" size=16}}
+              {{/paper-button}}
+            {{paper-divider}}
+
+        {{/paper-item}} 
+      {{/each}}     
   {{/paper-content}}
 </div>
 
@@ -155,7 +222,7 @@
 
 <!-- ADD TASK MODAL -->
 {{#if isShowingAddTaskModal}} 
-{{#modal-dialog onClose="toggleAddTaskModal" 
+{{#modal-dialog onClose="cancelAddTaskModal" 
                 targetAttachment="center" 
                 translucentOverlay=true}}
 
@@ -200,7 +267,7 @@
 
 <div class="layout-row">
   {{#paper-button onClick=(action "addTask" newTask) class="submit-button" raised=true primary=true}}Submit{{/paper-button}} {{#paper-button
-  onClick=(action "toggleAddTaskModal")}}Cancel{{/paper-button}}
+  onClick=(action "cancelAddTaskModal")}}Cancel{{/paper-button}}
 </div>
 
 {{/modal-dialog}} {{/if}}
@@ -209,7 +276,7 @@
 <!--ADD USER MODAL-->
 
 {{#if isShowingAddUserModal}} 
-  {{#modal-dialog onClose="toggleAddUserModal" 
+  {{#modal-dialog onClose="cancelAddUserModal" 
                   argetAttachment="center" 
                   translucentOverlay=true}}
 
@@ -218,7 +285,7 @@
 </div>
 <div class="layout-row">
   {{#paper-button onClick=(action "addUser" newUser) class="submit-button" raised=true primary=true}}Submit{{/paper-button}}
-  {{#paper-button onClick=(action "toggleAddUserModal")}}Cancel{{/paper-button}}
+  {{#paper-button onClick=(action "cancelAddUserModal")}}Cancel{{/paper-button}}
 </div>
 
 {{/modal-dialog}} {{/if}}
@@ -226,7 +293,7 @@
 <!-- ADD TASKTYPE MODAL -->
 
 {{#if isShowingAddTasktypeModal}} 
-  {{#modal-dialog onClose="toggleAddUserModal" 
+  {{#modal-dialog onClose="cancelAddUserModal" 
                   argetAttachment="center" 
                   translucentOverlay=true}}
 
@@ -235,7 +302,7 @@
 </div>
 <div class="layout-row">
   {{#paper-button onClick=(action "addTasktype" newTasktype) class="submit-button" raised=true primary=true}}Submit{{/paper-button}}
-  {{#paper-button onClick=(action "toggleAddTasktypeModal")}}Cancel{{/paper-button}}
+  {{#paper-button onClick=(action "cancelAddTasktypeModal")}}Cancel{{/paper-button}}
 </div>
 
 {{/modal-dialog}} {{/if}}

@@ -11,6 +11,7 @@ export default DS.Model.extend(Validations, {
   name: DS.attr(),
   status: DS.attr(),
   priority: DS.attr(),
+  
   user: DS.belongsTo('user'),
   tasktype: DS.belongsTo('tasktype')
 });

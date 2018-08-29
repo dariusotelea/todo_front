@@ -47,25 +47,25 @@
   </h1>
   <div class="layout-row layout-xs-column layout-align-center-center center-list">
     <div class="flex">
-      {{#paper-card class="card-rounded1" as |card|}} {{#card.title as |title|}} {{#title.text as |text|}} {{#text.headline}}{{tasks.length}}{{/text.headline}}
+      {{#paper-card class="card-rounded1" as |card|}} {{#card.title as |title|}} {{#title.text as |text|}} {{#text.headline}}{{allTasks}}{{/text.headline}}
       {{#text.subhead}}Total number of tasks{{/text.subhead}} {{/title.text}} {{paper-icon "language" size=150}}{{/card.title}}
       {{/paper-card}}
     </div>
     <div class="flex">
-      {{#paper-card class="card-rounded2" as |card|}} {{#card.title as |title|}} {{#title.text as |text|}} {{#text.headline}}{{tasks.length}}{{/text.headline}}
+          {{#paper-card class="card-rounded2" as |card|}} {{#card.title as |title|}} {{#title.text as |text|}} {{#text.headline}}{{tasksInProgress.length}}{{/text.headline}}
       {{#text.subhead}}Tasks in progress{{/text.subhead}} {{/title.text}} {{paper-icon "settings_backup_restore" size=150}} {{/card.title}}
       {{/paper-card}}
     </div>
   </div>
   <div class="layout-row layout-xs-column layout-align-center-center center-list">
     <div class="flex">
-      {{#paper-card class="card-rounded3" as |card|}} {{#card.title as |title|}} {{#title.text as |text|}} {{#text.headline}}{{tasks.length}}{{/text.headline}}
+      {{#paper-card class="card-rounded3" as |card|}} {{#card.title as |title|}} {{#title.text as |text|}} {{#text.headline}}{{tasksEnded.length}}{{/text.headline}}
       {{#text.subhead}}Completed Tasks{{/text.subhead}} {{/title.text}} {{paper-icon "check_circle_outline" size=150}} {{/card.title}}
       {{/paper-card}}
     </div>
     <div class="flex">
-      {{#paper-card class="card-rounded4" as |card|}} {{#card.title as |title|}} {{#title.text as |text|}} {{#text.headline}}{{users.length}}{{/text.headline}}
-      {{#text.subhead}}Total number of users{{/text.subhead}} {{/title.text}} {{paper-icon "account_circle" size=150}} {{/card.title}}
+      {{#paper-card class="card-rounded4" as |card|}} {{#card.title as |title|}} {{#title.text as |text|}} {{#text.headline}}{{tasksNotStarted.length}}{{/text.headline}}
+      {{#text.subhead}}Tasks not started{{/text.subhead}} {{/title.text}} {{paper-icon "highlight_off" size=150}} {{/card.title}}
       {{/paper-card}}
     </div>
   </div>
@@ -77,7 +77,7 @@
 
 <!-- ADD TASK MODAL -->
 {{#if isShowingAddTaskModal}} 
-{{#modal-dialog onClose="toggleAddTaskModal" 
+{{#modal-dialog onClose="cancelAddTaskModal" 
                 targetAttachment="center" 
                 translucentOverlay=true}}
 
@@ -124,7 +124,7 @@
 
 <div class="layout-row">
   {{#paper-button onClick=(action "addTask" newTask) class="submit-button" raised=true primary=true}}Submit{{/paper-button}} {{#paper-button
-  onClick=(action "toggleAddTaskModal")}}Cancel{{/paper-button}}
+  onClick=(action "cancelAddTaskModal")}}Cancel{{/paper-button}}
 </div>
 
 {{/modal-dialog}} {{/if}}
@@ -133,7 +133,7 @@
 <!--ADD USER MODAL-->
 
 {{#if isShowingAddUserModal}} 
-  {{#modal-dialog onClose="toggleAddUserModal" 
+  {{#modal-dialog onClose="cancelAddUserModal" 
                   argetAttachment="center" 
                   translucentOverlay=true}}
 
@@ -142,7 +142,7 @@
 </div>
 <div class="layout-row">
   {{#paper-button onClick=(action "addUser" newUser) class="submit-button" raised=true primary=true}}Submit{{/paper-button}}
-  {{#paper-button onClick=(action "toggleAddUserModal")}}Cancel{{/paper-button}}
+  {{#paper-button onClick=(action "cancelAddUserModal")}}Cancel{{/paper-button}}
 </div>
 
 {{/modal-dialog}} {{/if}}
@@ -150,7 +150,7 @@
 <!-- ADD TASKTYPE MODAL -->
 
 {{#if isShowingAddTasktypeModal}} 
-  {{#modal-dialog onClose="toggleAddUserModal" 
+  {{#modal-dialog onClose="cancelAddUserModal" 
                   argetAttachment="center" 
                   translucentOverlay=true}}
 
@@ -159,7 +159,7 @@
 </div>
 <div class="layout-row">
   {{#paper-button onClick=(action "addTasktype" newTasktype) class="submit-button" raised=true primary=true}}Submit{{/paper-button}}
-  {{#paper-button onClick=(action "toggleAddTasktypeModal")}}Cancel{{/paper-button}}
+  {{#paper-button onClick=(action "cancelAddTasktypeModal")}}Cancel{{/paper-button}}
 </div>
 
 {{/modal-dialog}} {{/if}}
