@@ -1,0 +1,20 @@
+<div class='form-group'>
+  {{#paper-input type=type label=label value=value onChange=onChange class='form-control'}}{{/paper-input}}
+  {{#if isValid}}
+    <span class='valid-input fa fa-check'></span>
+  {{/if}}
+
+  <div class='input-error'>
+    {{#if showErrorMessage}}
+      <div class="error">
+        <p class="error-validation">{{v-get model valuePath 'message'}}</p>
+      </div>
+    {{/if}}
+
+    {{#if showWarningMessage}}
+      <div class='warning'>
+        {{v-get model valuePath 'warningMessage'}}
+      </div>
+    {{/if}}
+  </div>
+</div>

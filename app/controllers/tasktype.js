@@ -1,6 +1,6 @@
-import Controller from '@ember/controller';
-import { computed } from '@ember/object';
-import { filter, filterBy } from '@ember/object/computed';
+
+import Controller from "@ember/controller";
+import { computed } from "@ember/object";
 
 export default Controller.extend({
   ajax: Ember.inject.service(),
@@ -11,29 +11,37 @@ export default Controller.extend({
   notStartedTasks: computed('tasks.length', 'tasks.@each.status', function() {
     return this.get('tasks').filterBy('status', 'Not started')
   }),
-  
   inProgressTasks: computed('tasks.length', 'tasks.@each.status', function() {
     return this.get('tasks').filterBy('status', 'In progress')
   }),
-
   endedTasks: computed('tasks.length', 'tasks.@each.status', function() {
     return this.get('tasks').filterBy('status', 'Ended')
   }),
+  
+  selectedUser: null,
+  selectedTask: null,
+  selectedTasktype: null,
 
-  allTasks: computed('notStartedTasks', 'inProgressTasks', 'endedTasks', function() {
-    return this.get('notStartedTasks').length + this.get('inProgressTasks').length + this.get('endedTasks').length;
-  }),
+// Edit Task Modals
+  isShowingEditTaskModal: null,
+  isShowingEditTasktypeModal: null,
+  isShowingEditUserModal: null,
 
-  tasks: computed('users', function () {
-    return this.get('store').findAll('task');
+// Add Task
+  isShowingAddTaskModal: false,
+  isShowingAddUserModal: false,
+  isShowingAddTasktypeModal: false,
+
+  tasks: computed(function () {
+    return this.get("store").findAll("task");
   }),
 
   users: computed(function () {
-    return this.get('store').findAll('user');
+    return this.get("store").findAll("user");
   }),
 
   tasktypes: computed(function () {
-    return this.get('store').findAll('tasktype');
+    return this.get("store").findAll("tasktype");
   }),
 
   newTask: computed(function () {
@@ -42,38 +50,14 @@ export default Controller.extend({
 
   newUser: computed(function () {
     return this.store.createRecord('user');
+    
   }),
 
   newTasktype: computed(function () {
     return this.store.createRecord('tasktype');
   }),
 
-  tasksInProgress: filterBy('tasks', 'status', "In progress"),
-  tasksEnded: filterBy('tasks', 'status', 'Ended'),
-  tasksNotStarted: filterBy('tasks', 'status', "Not started"),
-
-
-
-
-  tasksFiltered: null,
-  isShowingAddTaskModal: false,
-  isShowingAddUserModal: false,
-  isShowingAddTasktypeModal: false,
-
-
-
-
   actions: {
-    sendRequest() {
-      return this.get('ajax').request('tasks/create_report', {
-        method: 'GET'       
-      });
-    },
-
-    getTasksByTasktypeId(tasktype) {
-      this.set('tasksFiltered', tasktype.get('tasks'))
-    },
-
     toggleAddTaskModal: function () {
       this.set('isShowingAddTaskModal', true);
     },
@@ -101,7 +85,25 @@ export default Controller.extend({
       this.set('isShowingAddTasktypeModal', false);
       this.get('newTasktype').deleteRecord();
     },
-    
+
+    toggleEditTaskModal: function(task) {
+      this.set('selectedTask', task);
+      this.toggleProperty('isShowingEditTaskModal');
+    },
+
+    toggleEditUserModal: function() {
+      this.toggleProperty('isShowingEditUserModal');
+    },
+
+    toggleEditTasktypeModal: function() {
+      this.toggleProperty('isShowingEditTasktypeModal');
+    },
+
+    updateTask(selectedTask) {
+      selectedTask.save();
+      this.toggleProperty('isShowingEditTaskModal');
+    },
+
     addTask(task) {
       task.validate()
         .then(({ validations }) => {
@@ -113,6 +115,30 @@ export default Controller.extend({
           }
           this.set('didValidate', true);
         });   
+    },
+
+    deleteTask(taskId) {
+      this.store.findRecord('task', taskId, {backgroundReload:false}).then(function(task){
+        task.deleteRecord();
+        task.get('isDeleted');
+        task.save();
+      });
+    },
+
+    deleteUser(userId) {
+      this.store.findRecord('user', userId, { backgroundReload:false }).then(function(user) {
+      user.deleteRecord();
+      user.get('isDeleted');
+      user.save();
+      });
+    },
+
+    deleteTasktype(tasktypeId) {
+      this.store.findRecord('tasktype', tasktypeId, { backgroundReload: false }).then(function(tasktype){
+        tasktype.deleteRecord();
+        tasktype.get('isDeleted');
+        tasktype.save();
+      });
     },
     
     addUser(user) {

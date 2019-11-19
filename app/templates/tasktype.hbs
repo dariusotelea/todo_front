@@ -1,0 +1,308 @@
+<!-- TOOLBAR -->
+
+{{#paper-toolbar}} 
+  {{#paper-toolbar-tools class="toolbar"}} 
+    {{#link-to 'home'}}
+      {{#paper-button}}{{paper-icon "home" size=20}}Home{{/paper-button}}
+    {{/link-to}}
+
+    {{#link-to 'tasktype'}}
+      {{#paper-button}}{{paper-icon "today" size=20}}Tasks{{/paper-button}}
+    {{/link-to}}
+
+    {{#link-to 'users'}}
+      {{#paper-button}}{{paper-icon "face" size=20}}Users{{/paper-button}}
+    {{/link-to}}
+
+    {{#link-to 'tasktypeditor'}}
+      {{#paper-button}}{{paper-icon "assignment" size=20}}Tasktpyes{{/paper-button}}
+    {{/link-to}}
+    <span class="flex"></span>
+
+
+
+     <!-- SETTINGS DROPDOWN -->
+    {{#paper-menu as |menu|}} 
+      {{#menu.trigger}} 
+        {{#paper-button iconButton=true}} {{paper-icon "settings"}} {{/paper-button}}
+      {{/menu.trigger}} 
+      {{#menu.content as |content|}} 
+        {{#content.menu-item onClick="toggleAddTasktypeModal"}}
+          <span>Create Task Type</span>
+        {{/content.menu-item}} {{#content.menu-item onClick="toggleAddTaskModal"}}
+          <span>Create Task</span>
+        {{/content.menu-item}} {{#content.menu-item onClick="toggleAddUserModal"}}
+          <span>Create User</span>
+        {{/content.menu-item}} 
+      {{/menu.content}} 
+    {{/paper-menu}} 
+  {{/paper-toolbar-tools}} 
+{{/paper-toolbar}}
+
+
+
+<div class="flex">
+  {{#paper-content class="md-padding"}}
+    <h1>Tasks</h1>
+    {{#paper-item class="layout layout-md-line"}}
+      <div class="flex-20"> 
+        <strong>Task name</strong> 
+      </div>
+      <div class="flex-15">
+        <strong>Status</strong>
+      </div>
+      <div class="flex-15">
+        <strong>Priority</strong>
+      </div>
+      <div class="flex-25">  
+        <strong>Task type</strong>
+      </div>
+      <div class="flex-20">  
+        <strong>Assigned to</strong>
+      </div>
+      <div class="flex">
+        <strong>Edit</strong>
+      </div>
+      
+        <strong>Delete</strong>
+      
+    {{/paper-item}}
+    {{paper-divider}}
+    {{!-- Display not started tasks --}}
+      {{#each notStartedTasks as |task|}} 
+        {{#paper-item class="layout layout-md-line"}}
+            
+            <div class="flex-20">   
+              {{task.name}}
+            </div>
+            <div class="flex-15">
+              {{task.status}}
+            </div>
+            <div class="flex-15">
+              {{task.priority}}
+            </div>
+            <div class="flex-25">
+              {{task.tasktype.name}}
+            </div>
+            <div class="flex-20">
+              {{task.user.name}}
+            </div>
+    
+          
+              {{#paper-button class="flex-" iconButton=true 
+                              onClick=(action "toggleEditTaskModal" task)}}
+                              {{paper-icon "edit" size=16}}
+              {{/paper-button}}
+              {{#paper-button onClick=(action "deleteTask" task.id) 
+                              iconButton=true}}
+                              {{paper-icon "clear" size=16}}
+              {{/paper-button}}
+            {{paper-divider}}
+
+        {{/paper-item}} 
+      {{/each}}
+    {{!-- Display in progress tasks  --}}
+      {{#each inProgressTasks as |task|}} 
+        {{#paper-item class="layout layout-md-line"}}
+            
+            <div class="flex-20">   
+              {{task.name}}
+            </div>
+            <div class="flex-15">
+              {{task.status}}
+            </div>
+            <div class="flex-15">
+              {{task.priority}}
+            </div>
+            <div class="flex-25">
+              {{task.tasktype.name}}
+            </div>
+            <div class="flex-20">
+              {{task.user.name}}
+            </div>
+    
+          
+              {{#paper-button class="flex-" iconButton=true 
+                              onClick=(action "toggleEditTaskModal" task)}}
+                              {{paper-icon "edit" size=16}}
+              {{/paper-button}}
+              {{#paper-button onClick=(action "deleteTask" task.id) 
+                              iconButton=true}}
+                              {{paper-icon "clear" size=16}}
+              {{/paper-button}}
+            {{paper-divider}}
+
+        {{/paper-item}} 
+      {{/each}}
+      {{!-- Display ended tasks --}}
+      {{#each endedTasks as |task|}} 
+        {{#paper-item class="layout layout-md-line"}}
+            
+            <div class="flex-20">   
+              {{task.name}}
+            </div>
+            <div class="flex-15">
+              {{task.status}}
+            </div>
+            <div class="flex-15">
+              {{task.priority}}
+            </div>
+            <div class="flex-25">
+              {{task.tasktype.name}}
+            </div>
+            <div class="flex-20">
+              {{task.user.name}}
+            </div>
+    
+          
+              {{#paper-button class="flex-" iconButton=true 
+                              onClick=(action "toggleEditTaskModal" task)}}
+                              {{paper-icon "edit" size=16}}
+              {{/paper-button}}
+              {{#paper-button onClick=(action "deleteTask" task.id) 
+                              iconButton=true}}
+                              {{paper-icon "clear" size=16}}
+              {{/paper-button}}
+            {{paper-divider}}
+
+        {{/paper-item}} 
+      {{/each}}     
+  {{/paper-content}}
+</div>
+
+
+{{!-- Edit Task Modal --}}
+{{#if isShowingEditTaskModal}}
+  {{#modal-dialog onClose="toggleEditTaskModal"
+                  targetAttachment="center"
+                  translucentOverlay=true}}
+<div class="layout layout-sm-column">
+  {{validated-input type=text didValidate=didValidate label="Task name" model=selectedTask valuePath='name' onChange=(action (mut selectedTask.name))}}
+</div>
+<div class="layout layout-sm-column">
+  {{#paper-select placeholder="Task status"
+                  options=statusOptions
+                  selected=selectedTask.status
+                  required=true
+                  model=selectedTask
+                  onChange=(action (mut selectedTask.status)) as |statusOptions|
+                  }}{{statusOptions}}{{/paper-select}}
+ 
+</div>
+<div class="layout layout-sm-column">
+   {{#paper-select placeholder="Task priority"
+                   options=priorityOptions
+                   selected=selectedTask.priority
+                   required=true
+                   model=selectedTask
+                   onChange=(action (mut selectedTask.priority)) as |priorityOptions|
+                   
+                  }}{{priorityOptions}}{{/paper-select}}
+</div>
+<div class="layout  layout-sm-column">
+  {{#paper-select placeholder="Choose a category" 
+                  selected= selectedTask.tasktype 
+                  options = tasktypes 
+                  valuePath='name' 
+                  onChange=(action (mut selectedTask.tasktype)) as |tasktype|}} {{tasktype.name}} {{/paper-select}}
+</div>
+
+<div class="layout  layout-sm-column">
+  {{#paper-select placeholder="Asign to user" 
+                  selected= selectedTask.user 
+                  options = users 
+                  onChange=(action (mut selectedTask.user)) as |user|}} {{user.name}} {{/paper-select}}
+</div>
+<div class="layout-row">
+  {{#paper-button onClick=(action "updateTask" selectedTask) class="submit-button" raised=true primary=true}}Save{{/paper-button}} 
+  {{#paper-button onClick=(action "toggleEditTaskModal")}}Cancel{{/paper-button}}
+</div>
+  {{/modal-dialog}}
+{{/if}}
+
+<!-- ADD TASK MODAL -->
+{{#if isShowingAddTaskModal}} 
+{{#modal-dialog onClose="cancelAddTaskModal" 
+                targetAttachment="center" 
+                translucentOverlay=true}}
+
+<div class="layout layout-sm-column">
+  {{validated-input type=text didValidate=didValidate label="Task name" model=newTask valuePath='name' onChange=(action (mut newTask.name))}}
+</div>
+<div class="layout layout-sm-column">
+  {{#paper-select placeholder="Task status"
+                  options=statusOptions
+                  selected=newTask.status
+                  required=true
+                  model=newTask
+                  onChange=(action (mut newTask.status)) as |statusOptions|
+                  }}{{statusOptions}}{{/paper-select}}
+ 
+</div>
+<div class="layout layout-sm-column">
+   {{#paper-select placeholder="Task priority"
+                   options=priorityOptions
+                   selected=newTask.priority
+                   required=true
+                   model=newTask
+                   onChange=(action (mut newTask.priority)) as |priorityOptions|
+                   
+                  }}{{priorityOptions}}{{/paper-select}}
+</div>
+<div class="layout  layout-sm-column">
+  {{#paper-select placeholder="Choose a category" 
+                  selected= newTask.tasktype 
+                  options = tasktypes 
+                  valuePath='name' 
+                  onChange=(action (mut newTask.tasktype)) as |tasktype|}} {{tasktype.name}} {{/paper-select}}
+</div>
+
+<div class="layout  layout-sm-column">
+  {{#paper-select placeholder="Asign to user" 
+                  selected= newTask.user 
+                  options = users 
+                  onChange=(action (mut newTask.user)) as |user|}} {{user.name}} {{/paper-select}}
+</div>
+
+
+<div class="layout-row">
+  {{#paper-button onClick=(action "addTask" newTask) class="submit-button" raised=true primary=true}}Submit{{/paper-button}} {{#paper-button
+  onClick=(action "cancelAddTaskModal")}}Cancel{{/paper-button}}
+</div>
+
+{{/modal-dialog}} {{/if}}
+
+
+<!--ADD USER MODAL-->
+
+{{#if isShowingAddUserModal}} 
+  {{#modal-dialog onClose="cancelAddUserModal" 
+                  argetAttachment="center" 
+                  translucentOverlay=true}}
+
+<div class="layout layout-sm-column">
+  {{validated-input type=text didValidate=didValidate label="User name" model=newUser valuePath='name' onChange=(action (mut newUser.name))}}
+</div>
+<div class="layout-row">
+  {{#paper-button onClick=(action "addUser" newUser) class="submit-button" raised=true primary=true}}Submit{{/paper-button}}
+  {{#paper-button onClick=(action "cancelAddUserModal")}}Cancel{{/paper-button}}
+</div>
+
+{{/modal-dialog}} {{/if}}
+
+<!-- ADD TASKTYPE MODAL -->
+
+{{#if isShowingAddTasktypeModal}} 
+  {{#modal-dialog onClose="cancelAddUserModal" 
+                  argetAttachment="center" 
+                  translucentOverlay=true}}
+
+<div class="layout layout-sm-column">
+  {{validated-input type=text didValidate=didValidate label="Task category name" model=newTasktype valuePath='name' onChange=(action (mut newTasktype.name))}}
+</div>
+<div class="layout-row">
+  {{#paper-button onClick=(action "addTasktype" newTasktype) class="submit-button" raised=true primary=true}}Submit{{/paper-button}}
+  {{#paper-button onClick=(action "cancelAddTasktypeModal")}}Cancel{{/paper-button}}
+</div>
+
+{{/modal-dialog}} {{/if}}
